@@ -3,11 +3,11 @@ function lowest_satisfying_comp(x, comp_func)
     lo = 1
     hi = length(x)
 
-    println(x)
+    # println(x)
     
     while lo < hi
         mid = div(lo + hi, 2)
-        println("Low: ", lo, " mid: ", mid, " hi: ", hi)
+        # println("Low: ", lo, " mid: ", mid, " hi: ", hi)
         if !comp_func(x[mid])
             # Elementet ved mid for liten -> juster opp lo
             lo = mid + 1
@@ -26,7 +26,7 @@ function lowest_satisfying_comp(x, comp_func)
         end
     end
 
-    println("Found: ", lo)
+    # println("Found: ", lo)
     return comp_func(x[lo]) ? lo : -1
 end
 
@@ -35,7 +35,7 @@ function binaryintervalsearch(x, delta, coordinate)
     x_size = size(x)[1]
 
     # println(x[1 + div(x_size, 2), coordinate])
-    println("Etter")
+    # println("Etter")
     if (x_size % 2) == 1
         # Odd number of points
         median = x[1 + div(x_size, 2), coordinate]
@@ -53,9 +53,9 @@ function binaryintervalsearch(x, delta, coordinate)
     lower_comp_func = x -> x >= lower_lim
     upper_comp_func = x -> x <= upper_lim
 
-    println("Median ", median)
-    println(x[1:mid, coordinate])
-    println("mid global ", mid)
+    # println("Median ", median)
+    # println(x[1:mid, coordinate])
+    # println("mid global ", mid)
 
     lo_idx = lowest_satisfying_comp(x[1:mid, coordinate], lower_comp_func)
     hi_idx = lowest_satisfying_comp(reverse(x[(x_size % 2 == 0 ? mid + 1 : mid):x_size, coordinate]), upper_comp_func)
@@ -76,7 +76,7 @@ function binaryintervalsearch(x, delta, coordinate)
 
     # while lo < hi
     #     mid = div(lo + hi, 2) + 1
-    #     println("Low: ", lo, " mid: ", mid, " hi: ", hi)
+        # println("Low: ", lo, " mid: ", mid, " hi: ", hi)
     #     if x[mid][coordinate] > median + delta
     #         hi = mid - 1
     #     else
@@ -99,17 +99,17 @@ function testcase(x, delta, coordinate)
     println(binaryintervalsearch(x, delta, coordinate), "\n")
 end
 
-testcase([1 2; 2 3; 3 0; 4 0; 5 1], 1.5, 1)
+# testcase([1 2; 2 3; 3 0; 4 0; 5 1], 1.5, 1)
 
-testcase([1 2; 2 0; 3 3; 4 4], 0.25, 1)
-# testcase([1 2; 2 0; 3 3; 4 4], 0.25, 2) # crashes because not sorted after second axis
+# testcase([1 2; 2 0; 3 3; 4 4], 0.25, 1)
+# # testcase([1 2; 2 0; 3 3; 4 4], 0.25, 2) # crashes because not sorted after second axis
 
-testcase([1.0 0.0; 2.0 0.0; 3.0 0.0], 0.5, 1)
-# testcase([1.0 0.0; 2.0 0.0; 3.0 0.0], 0.5, 2)
+# testcase([1.0 0.0; 2.0 0.0; 3.0 0.0], 0.5, 1)
+# # testcase([1.0 0.0; 2.0 0.0; 3.0 0.0], 0.5, 2)
 
-testcase([1.0 -1.0; 2.0 2.0; 3.0 3.0; 4.0 5.0; 5.0 5.0], 1, 1)
+# testcase([1.0 -1.0; 2.0 2.0; 3.0 3.0; 4.0 5.0; 5.0 5.0], 1, 1)
 
-testcase([1.0 0.0; 2.0 0.0; 3.0 0.0; 4.0 0.0], 3, 1)
+# testcase([1.0 0.0; 2.0 0.0; 3.0 0.0; 4.0 0.0], 3, 1)
 
-testcase([1.0 0.0; 2.0 0.0; 3.0 0.0; 4.0 0.0], 0.1, 1)
-testcase([1.0 0.0; 2.0 0.0; 3.0 0.0; 4.0 0.0], 0.1, 2)
+# testcase([1.0 0.0; 2.0 0.0; 3.0 0.0; 4.0 0.0], 0.1, 1)
+# testcase([1.0 0.0; 2.0 0.0; 3.0 0.0; 4.0 0.0], 0.1, 2)

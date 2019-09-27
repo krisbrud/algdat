@@ -54,5 +54,5 @@ function splitintwo(x, y)
     return x_left, x_right, y_left, y_right
 end
 
-println(splitintwo(x, y))
-println(splitintwo(x2, y2))
+# println(splitintwo(x, y))
+# println(splitintwo(x2, y2))

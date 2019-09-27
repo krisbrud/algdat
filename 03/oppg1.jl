@@ -74,5 +74,5 @@ function mergesort(x, coordinate)
 end
 
 # println(size(arr))
-result = mergesort(arr, 2)
-println(result)
+# result = mergesort(arr, 2)
+# println(result)
