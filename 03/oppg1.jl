@@ -23,7 +23,7 @@ arr = [1 2; 4 6; 2 1]
 # Flett sammen halvdelene
 
 function mergearrays(x,y,coordinate)
-    println("mergearrays()")
+    # println("mergearrays()")
     # calculate result matrix dimensions
     rows = size(x)[1] + size(y)[1]
     cols = size(x)[2] # assume same number of cols
@@ -35,21 +35,21 @@ function mergearrays(x,y,coordinate)
     i = 1 # x iterator
     j = 1 # y iterator
 
-    println("x")
-    println(x)
-    println("y")
-    println(y)
+    # println("x")
+    # println(x)
+    # println("y")
+    # println(y)
 
     for k = 1:rows
-        println("k: ", k, " i: ", i, " j: ", j)
-        println("merged")
-        println(merged)
+        # println("k: ", k, " i: ", i, " j: ", j)
+        # println("merged")
+        # println(merged)
         if x[i, :][coordinate] <= y[j, :][coordinate]
-            println("inside merge if")
+            # println("inside merge if")
             merged[k, :] = x[i, :]' # slice returns column vector, need to transpose
             i += 1
         else
-            println("inside merge else")
+            # println("inside merge else")
             merged[k, :] = y[j, :]'
             j += 1
         end
@@ -60,9 +60,9 @@ end
 
 #x usortert array, coordinate angir koordinat akse vi skal sortere langs
 function mergesort(x, coordinate)
-    println("mergesort()")
+    # println("mergesort()")
     mid = div(size(x)[1], 2) # get the number of rows using size, not number of total elements
-    println(x, " ", coordinate, " ", mid)
+    # println(x, " ", coordinate, " ", mid)
     
     if size(x)[1] > 1 # length greater than 2
         left = mergesort(x[1:mid, :], coordinate)    
