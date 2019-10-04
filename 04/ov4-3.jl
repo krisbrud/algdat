@@ -80,28 +80,20 @@ function intervalswithminlength(A, minlength)
     end
 
     if in_sequence
-        # last element is part of sequence
+        # last element of A is part of sequence
         push!(intervals, [first, length(A)])
     end
 
     return intervals
 end
 
-println("Intervals:")
-println(intervalswithminlength(["aa", "aa", "a", "aa", "aa"], 2))
-
 function flexradix(A, maxlength)
     B = countingsortlength(A) # Also copies the list, so the sorting is not inplace
-    println("B: $(B)")
 
-    len = length(B)
-
-    for i = 1:maxlength
-        intervals = intervalswithminlength(A, i)
-        println("i: $i, B: $B")
-        println("intervals: $intervals \n")
-        for (first, last) in intervals
-            B[first:last] = countingsortletters(B[first:last], i)
+    for i = maxlength:-1:1
+        intervals = intervalswithminlength(B, i)
+        for (first, last) in intervals # Unpack tuples
+            B[first:last] = countingsortletters(view(B, first:last), i)
         end
     end
 
