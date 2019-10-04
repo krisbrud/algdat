@@ -80,7 +80,7 @@ function intervalswithminlength(A, minlength)
     end
 
     if in_sequence
-        # last element of A is part of sequence
+        # last element is part of sequence
         push!(intervals, [first, length(A)])
     end
 
