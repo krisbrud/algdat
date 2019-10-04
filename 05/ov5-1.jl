@@ -1,6 +1,6 @@
 ### Du skal implementere denne funksjonen ###
 function dnasimilarity(s1, s2)
-	return sum(s1[i] == s2[i] ? 1 : 0 for i in 1:length(s2))
+    return sum(s1[i] == s2[i] ? 1 : 0 for i in 1:length(s2))
 end
 
 
