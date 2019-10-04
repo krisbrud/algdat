@@ -7,7 +7,7 @@ function chartodigit(character)
     return character - '`'
 end
 
-function countingsortletters(A,position)
+function countingsortletters(A, position)
     k = 26 # 26 letters in a-z
     
     B = similar(A)
@@ -16,8 +16,8 @@ function countingsortletters(A,position)
     for i = 1:length(A)
         C[chartodigit(A[i][position])] += 1
     end
-    for i = 1:k-1
-        C[i+1] += C[i] # Make C cumulative
+    for i = 1:k - 1
+        C[i + 1] += C[i] # Make C cumulative
     end
     for i = length(A):-1:1
         B[Int(C[chartodigit(A[i][position])])] = A[i]
@@ -31,7 +31,7 @@ end
 ## Da må du fylle den ut selv
 function countingsortlength(A)
     B = similar(A)
-    keyfunc = s -> length(s) + 1
+    keyfunc = s->length(s) + 1
 
     # Find max length of strings in a
     k = maximum(keyfunc, A) # +1 to handle empty strings
@@ -41,8 +41,8 @@ function countingsortlength(A)
     for i = 1:length(A)
         C[length(A[i]) + 1] += 1
     end
-    for i = 1:k-1
-        C[i+1] += C[i]
+    for i = 1:k - 1
+        C[i + 1] += C[i]
     end
     for i = length(A):-1:1
         B[C[keyfunc(A[i])]] = A[i]
@@ -59,16 +59,36 @@ end
 #   Hold styr på laveste og høyeste index gitt strenglengde
 #   Bruk en indexfunksjon
 
-function firstwithminimumlength(A, minlength)
-    # Returns index of first string with length at least minlength
-    return findfirst(s -> length(s) >= minlength, A)
+function intervalswithminlength(A, minlength)
+    intervals = []
+    in_sequence = false
+    first = nothing
+    
+    for i = 1:length(A)-1
+        if in_sequence
+            if length(A[i+1]) < minlength
+                # End of sequence
+                in_sequence = false
+                if i > first # length at least two
+                    push!(intervals, [first, i])
+                end
+            end
+        elseif length(A[i]) >= minlength
+            in_sequence = true
+            first = i
+        end
+    end
+
+    if in_sequence
+        # last element is part of sequence
+        push!(intervals, [first, length(A)])
+    end
+
+    return intervals
 end
 
-function laststwithminimumlength(A, minlength)
-    # Returns the index last string longer than minlength
-    index = findfirst(s -> length(s) < minlength, A)
-    return index != nothing ? index - 1 : nothing
-end
+println("Intervals:")
+println(intervalswithminlength(["aa", "aa", "a", "aa", "aa"], 2))
 
 function flexradix(A, maxlength)
     B = countingsortlength(A) # Also copies the list, so the sorting is not inplace
@@ -76,31 +96,12 @@ function flexradix(A, maxlength)
 
     len = length(B)
 
-    intervals = []
-
     for i = 1:maxlength
-        println("i $i")
-        # Find intervals that need to be sorted by the character
-        first = firstwithminimumlength(B, i)
-        println("first, $first")
-        last = laststwithminimumlength(view(B, first:length(B)), i)
-        if last === nothing && length(B[end]) >= i
-            last = length(B)
-            println("last, $last")
-        end
-
-        while first != nothing && last != nothing
-            println("pushing first, last = $first, $last")
-            push!(intervals, [first, last])
-            first = firstwithminimumlength(view(B, last + 1:len), i)
-            if first != nothing
-                last = laststwithminimumlength(view(B, first:len), i)
-            end
-        end
-
-        while length(intervals) != 0
-            first, last = pop!(intervals)
-            B[first:last] = countingsortletters(view(B, first:last), i)
+        intervals = intervalswithminlength(A, i)
+        println("i: $i, B: $B")
+        println("intervals: $intervals \n")
+        for (first, last) in intervals
+            B[first:last] = countingsortletters(B[first:last], i)
         end
     end
 
