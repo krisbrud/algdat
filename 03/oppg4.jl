@@ -21,8 +21,6 @@ function splitintwo(x, y)
     left_it = 1
     right_it = 1
 
-    y_split = maximum(x_left[2,:])
-
     y_coords_in_left_at_median = Set()
     #  = [row[2] for row in eachrow(x_left) if row[1] == x_left[end, 1]] # if eachrow is defined
     for r in 1:left_len
