@@ -1,28 +1,16 @@
-# function prev_ml_idx(s, mls, ml_idx)
-#     for i = ml_idx-1:-1:1
-#         if (mls[i] + 1 == mls[ml_idx]) && s[i] < s[ml_idx]
-#             return i
-#         end
-#     end
-#     return -1
-# end
-
 function lis(s, mls)
-    ml, ml_idx = findmax(mls)
-    println("s: $s")
-    println("mls: $mls")
-    println("ml: $ml")
-    println("ml_idx $ml_idx")
+    ml = maximum(mls) # Longest increasing subseq
+    ml_idx = findlast(x -> x == ml, mls) # Index of last element of lis. 
+    # Prefer the last subseq.
 
     lis = zeros(Int, ml)
     
     for i = length(lis):-1:1
+        lis[i] = s[ml_idx]
+
         # Set ml_idx to an index where mls[j] is one less,
         # as well as requiring it to actually be a valid
         # increasing subseq.
-        lis[i] = s[ml_idx]
-        
-        #ml_idx = prev_ml_idx(s, mls, ml_idx)
         for j = ml_idx:-1:1
             if mls[j] + 1 == mls[ml_idx] && s[j] < s[ml_idx]
                 ml_idx = j
