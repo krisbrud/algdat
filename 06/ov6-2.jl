@@ -8,7 +8,7 @@ function lis(s, mls)
     for i = length(lis):-1:1
         lis[i] = s[ml_idx]
 
-        # Set ml_idx to an index where mls[j] is one less,
+        # Set ml_idx to last index where mls[j] is one less,
         # as well as requiring it to actually be a valid
         # increasing subseq.
         for j = ml_idx:-1:1
