@@ -4,7 +4,6 @@ function dnasimilarity(s1, s2)
 end
 
 
-
 # if PROGRAM_FILE == @__FILE__
 ### Tester ###
 # Disse testene blir kjør når du kjører filen
@@ -19,7 +18,7 @@ using Test
     @test dnasimilarity("ATCG", "ATGC") == 2
     @test dnasimilarity("ATATATA", "TATATAT") == 0
     @test dnasimilarity("ATGCATGC", "ATGCATGC") == 8
-    @test dnasimilarity("CAATAAGGATCTGGTAGCTT", "CCTTACTGAAGCCGCTATGC") == 6
+    @test dnasimilarity("CAATAAGGAwTCTGGTAGCTT", "CCTTACTGAAGCCGCTATGC") == 6
 end
 
 println("\nFungerte alt? Prøv å kjør koden i inginious!")
