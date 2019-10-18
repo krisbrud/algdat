@@ -4,14 +4,11 @@ include("ov7-2.jl")
 function mincoinsdynamic(coins, value)
     subsol = fill(typemax(Int), value)
 
-    for i = 1:value
-        if i in coins
-            subsol[i] = 1
-        end
+    relevant = filter(x -> x < value, coins) # Relevant coins
+    for i = 1:length(relevant)
+        subsol[relevant[i]] = 1
     end
 
-    println("subsol $subsol")
-    
     for i = 2:value
         if subsol[i] != 1
             subsol[i] = minimum(subsol[j] + subsol[i-j] for j = 1:i-1)
