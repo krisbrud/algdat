@@ -5,7 +5,10 @@ function mincoinsdynamic(coins, value)
     subsol = fill(typemax(Int), value)
 
     relevant = filter(x -> x < value, coins) # Relevant coins
+    
     for i = 1:length(relevant)
+        # If a coin of the value exists, it is trivially
+        # the optimal solution of the subproblem
         subsol[relevant[i]] = 1
     end
 

@@ -3,8 +3,8 @@ function mincoinsgreedy(coins, value)
     total_coins = 0
 
     for i = 1:length(coins)
-        num_coins = div(value, coins[i])
-        value -= num_coins * coins[i]
+        @inbounds num_coins = div(value, coins[i])
+        @inbounds value -= num_coins * coins[i]
         total_coins += num_coins
     end
 
