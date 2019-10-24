@@ -5,7 +5,7 @@ function mincoinsdynamic(coins, value)
     subsol = fill(typemax(Int), value)
 
     for i = length(coins):-1:1
-        if coins[i] < value
+        if coins[i] <= value
             subsol[coins[i]] = 1
         else
             break
@@ -13,8 +13,25 @@ function mincoinsdynamic(coins, value)
     end
 
     for i = 2:value
+        # Find indexes in coins to consider
+        largest_idx = length(coins)
+
+        for j = length(coins):-1:1
+            if coins[j] <= i
+                largest_idx = j
+            else
+                break
+            end
+        end
+
         if subsol[i] != 1
-            subsol[i] = minimum(subsol[i-coin] + 1 for coin in filter(coin -> coin <= i, coins))
+            # Find minimum
+            subsol[i] = subsol[i-1] + 1 # Assume the coin 1 always exists
+            for k = length(coins)-1:-1:largest_idx
+                if subsol[i - coins[k]]  + 1 < subsol[i]
+                    subsol[i] = subsol[i - coins[k]] + 1
+                end
+            end
         end
     end
 
@@ -22,6 +39,10 @@ function mincoinsdynamic(coins, value)
 end
 
 function mincoins(coins, value)
+    if value in coins
+        return 1
+    end
+
     if usegreed(coins)
         return mincoinsgreedy(coins, value)
     end
