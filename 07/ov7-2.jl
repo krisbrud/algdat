@@ -1,4 +1,4 @@
-function mincoinsgreedy(coins, value)
+function mincoinsgreedy(coins::Array{Int}, value::Int)
     # Velg alltid så mange mynter som mulig - grådig valg
     total_coins = 0
 

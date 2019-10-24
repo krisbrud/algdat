@@ -1,12 +1,12 @@
 include("ov7-1.jl")
 include("ov7-2.jl")
 
-function mincoinsdynamic(coins, value)
+function mincoinsdynamic(coins::Array{Int}, value::Int)
     subsol = fill(typemax(Int), value)
 
     for i = length(coins):-1:1
-        if coins[i] <= value
-            subsol[coins[i]] = 1
+        @inbounds if coins[i] <= value
+            @inbounds subsol[coins[i]] = 1
         else
             break
         end
@@ -17,28 +17,28 @@ function mincoinsdynamic(coins, value)
         largest_idx = length(coins)
 
         for j = length(coins):-1:1
-            if coins[j] <= i
+            @inbounds if coins[j] <= i
                 largest_idx = j
             else
                 break
             end
         end
 
-        if subsol[i] != 1
+        @inbounds if subsol[i] != 1
             # Find minimum
-            subsol[i] = subsol[i-1] + 1 # Assume the coin 1 always exists
+            @inbounds subsol[i] = subsol[i-1] + 1 # Assume the coin 1 always exists
             for k = length(coins)-1:-1:largest_idx
-                if subsol[i - coins[k]]  + 1 < subsol[i]
-                    subsol[i] = subsol[i - coins[k]] + 1
+                @inbounds if subsol[i - coins[k]]  + 1 < subsol[i]
+                    @inbounds subsol[i] = subsol[i - coins[k]] + 1
                 end
             end
         end
     end
 
-    return subsol[end]
+    @inbounds return subsol[end]
 end
 
-function mincoins(coins, value)
+function mincoins(coins::Array{Int}, value::Int)
     if value in coins
         return 1
     end

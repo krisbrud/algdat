@@ -1,5 +1,5 @@
 function usegreed(coins)
-    for i = 1:length(coins) - 1
+    @simd for i = 1:length(coins) - 1
         @inbounds if coins[i] % coins[i + 1] != 0
             return false
         end
