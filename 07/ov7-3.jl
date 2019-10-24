@@ -5,20 +5,20 @@ function mincoinsdynamic(coins, value)
     subsol = fill(typemax(Int), value)
 
     for i = length(coins):-1:1
-        @inbounds if coins[i] < value
-            @inbounds subsol[coins[i]] = 1
+        if coins[i] < value
+            subsol[coins[i]] = 1
         else
             break
         end
     end
 
     for i = 2:value
-        @inbounds if subsol[i] != 1
-            @inbounds subsol[i] = minimum(subsol[j] + subsol[i-j] for j = 1:i-1)
+        if subsol[i] != 1
+            subsol[i] = minimum(subsol[i-coin] + 1 for coin in filter(coin -> coin <= i, coins))
         end
     end
 
-    @inbounds return subsol[end]
+    return subsol[end]
 end
 
 function mincoins(coins, value)
@@ -39,6 +39,7 @@ using Test
     @test mincoins([4,3,1],18) == 5
     @test mincoins([1000,500,100,30,7,1],14) == 2
     @test mincoins([40, 30, 20, 10, 1], 90) == 3
+    @test mincoins([200, 120, 100, 20, 1], 1) == 1
 end
 
 println("\nFungerte alt? Prøv å kjør koden i inginious!")
