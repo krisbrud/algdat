@@ -34,51 +34,70 @@ end
 
 # 9-4
 function findclusters(E, n, k)
-    sort!(E) # Sort edges in increasing order by weight
+    sort!(E)       # Sort edges in increasing order by weight
 
-    num_edges = 0  # Number of edges included in the MST so far
-    i = 1          # Current index in E
+    println("length(E): $(length(E)) n: $n k: $k")
+    println("E sorted: $E")
+    
+    num_edges = 0  # Number of edges included so far
+    i = 1          # Current iterator index in E
 
     nodes = [DisjointSetNode() for i = 1:n]
-    edges = []
     
-    while num_edges <= k
+    # For every edge (in increasing order by weight), include the edge in our solution
+    # iff the nodes are not part of the same set 
+
+    while num_edges < n - k
+        println("i $i")
         w, u, v = E[i]
         if findset(nodes[u]) != findset(nodes[v])
             union!(nodes[u], nodes[v])
-            push!(edges, E[i])
             num_edges += 1
         end
         i += 1
     end
-    
-    # The nodes are now connected in the clusters specified by 'nodes'
-    # and the edges by 'edges'
+
+    println("i after while: $i")
+    println("num_edges $num_edges")
+
+    # We have now picked the k lightest edges without creating a cycle.
+    # It may still be that all n nodes are not connected by an edge to another node
+    # However, nodes[] represent which nodes should be connected in the cluster
 
     clusters = [[] for _ in 1:k]
     set_indices = []
 
-    # println("nodes $nodes")
-    # println("edges $edges")
+    # Insert the first node into the first cluster to avoid special conditions in loop
+    push!(clusters[1], 1)
+    push!(set_indices, 1)
     
-    for i = 1:length(edges)
-        # println("i $i")
-        # Fill the clusters consecutively with the edges
-        # Every edge should be placed in 
-        for j in 1:length(clusters)
-            if length(clusters[j]) == 0
-                # Empty cluster, insert the node
-                w, u, v = edges[i]
-                push!(set_indices, i)
-                break
-            elseif findset(nodes[i]) == findset(nodes[set_indices[j]])
-                push!(clusters[j], edges[i])
+    for i = 2:n
+        println("i: $i clusters $clusters")
+        println("set_indices $set_indices")
+        inserted = false
+        for j = 1:length(set_indices)
+            if findset(nodes[set_indices[j]]) == findset(nodes[i])
+                # Node belongs to cluster, include it there
+                println("insert into existing")
+                push!(clusters[j], i)
+                inserted = true
+                println("inserted $i to existing cluster $j")
                 break
             end
         end
+        if !inserted
+            # Node does not belong to any previous cluster, include it in the next cluster
+            println("insert into new cluster")
+            # Make node i a representative of the cluster by adding it to set_indices
+            push!(set_indices, i)
+
+            # Include i in the cluster at the new index
+            push!(clusters[length(set_indices)], i)
+            # println("inserted $j to new cluster $(set_indices[end])")
+        end
     end
-    println("clusters $clusters")
-    # println("set_indices $set_indices")
+
+    println("clusters: $clusters")
     
     return clusters
 end
