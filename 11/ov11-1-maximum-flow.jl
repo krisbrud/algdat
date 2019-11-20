@@ -1,4 +1,4 @@
-using DataStructures
+using DataStructures: Queue, enqueue!, dequeue!
 
 #Tilgjengelige funksjoner
 function find_augmenting_path(source, sink, nodes, flows, capacities)
