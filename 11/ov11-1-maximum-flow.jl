@@ -1,3 +1,5 @@
+using DataStructures
+
 #Tilgjengelige funksjoner
 function find_augmenting_path(source, sink, nodes, flows, capacities)
 
